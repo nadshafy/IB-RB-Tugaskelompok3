@@ -11,3 +11,26 @@ rules = [
 
 facts = {"Mesin Mati Total", "Suara Klik saat Start", "Tidak Ada Karat pada Terminal"}
 
+def forward_chaining(facts, rules):
+    new_facts = set(facts)
+    applied_rules = []
+    changed = True
+
+    while changed:
+        changed = False
+        # Urutkan berdasarkan prioritas (tinggi ke rendah)
+        sorted_rules = sorted(rules, key=lambda r: r["priority"], reverse=True)
+
+        for rule in sorted_rules:
+            # Cek apakah semua kondisi dalam "if" ada di fakta
+            if all(cond in new_facts for cond in rule["if"]) and rule["then"] not in new_facts:
+                new_facts.add(rule["then"])
+                applied_rules.append(rule["id"])
+                print(f"Aktivasi {rule['id']}: {rule['if']} → {rule['then']}")
+                changed = True
+
+    print("\n=== HASIL FORWARD CHAINING ===")
+    print("Aturan yang diaktifkan:", applied_rules)
+    print("Fakta akhir:", new_facts)
+    print("==============================\n")
+    return new_facts
