@@ -34,3 +34,28 @@ def forward_chaining(facts, rules):
     print("Fakta akhir:", new_facts)
     print("==============================\n")
     return new_facts
+
+def backward_chaining(goal, facts, rules, depth=0):
+    indent = "  " * depth
+
+    if goal in facts:
+        print(f"{indent}- {goal} ditemukan di fakta.")
+        return True
+
+    # Cari aturan yang menghasilkan goal
+    applicable_rules = [r for r in rules if r["then"] == goal]
+
+    for rule in applicable_rules:
+        print(f"{indent}Menguji {rule['id']}: Jika {rule['if']} maka {rule['then']}")
+        all_true = True
+        for condition in rule["if"]:
+            if not backward_chaining(condition, facts, rules, depth + 1):
+                all_true = False
+                break
+        if all_true:
+            print(f"{indent} Aturan {rule['id']} terpenuhi, menambah '{goal}' ke fakta.")
+            facts.add(goal)
+            return True
+
+    print(f"{indent} {goal} tidak dapat dibuktikan dengan aturan yang ada.")
+    return False
