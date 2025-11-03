@@ -6,7 +6,7 @@ rules = [
     {"id": "R5", "if": ["Suara Klik saat Start"], "then": "Aki Lemah", "priority": 2},         
     {"id": "R6", "if": ["Mesin Mati Total", "Tidak Ada Suara"], "then": "Fungsi Kelistrikan Terputus", "priority": 4},
     {"id": "R7", "if": ["Aki Lemah"], "then": "Mesin Sulit Start", "priority": 1},               
-    {"R8", "if": ["Cek Kelistrikan"], "then": "Isolasi Kelistrikan", "priority": 5},       
+    {"id": "R8", "if": ["Cek Kelistrikan"], "then": "Isolasi Kelistrikan", "priority": 5},  
     ]
 
 facts = {"Mesin Mati Total", "Suara Klik saat Start", "Tidak Ada Karat pada Terminal"}
@@ -15,7 +15,8 @@ def forward_chaining(facts, rules):
     new_facts = set(facts)
     applied_rules = []
     changed = True
-
+    
+    print("\n=== PROSES FORWARD CHAINING ===")
     while changed:
         changed = False
         # Urutkan berdasarkan prioritas (tinggi ke rendah)
@@ -59,3 +60,19 @@ def backward_chaining(goal, facts, rules, depth=0):
 
     print(f"{indent} {goal} tidak dapat dibuktikan dengan aturan yang ada.")
     return False
+
+if __name__ == "__main__":
+    # Jalankan Forward Chaining
+    hasil_forward = forward_chaining(facts, rules)
+
+    # Jalankan Backward Chaining
+    print("=== PROSES BACKWARD CHAINING ===")
+    goal = "Isolasi Kelistrikan"
+    result = backward_chaining(goal, facts, rules)
+
+    print("\n=== HASIL BACKWARD CHAINING ===")
+    if result:
+        print(f"Goal '{goal}' BERHASIL dibuktikan.")
+    else:
+        print(f"Goal '{goal}' TIDAK dapat dibuktikan.")
+    print("================================")
