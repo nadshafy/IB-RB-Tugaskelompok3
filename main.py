@@ -16,7 +16,6 @@ def forward_chaining(facts, rules):
     applied_rules = []
     changed = True
     
-    print("\n=== PROSES FORWARD CHAINING ===")
     while changed:
         changed = False
         # Urutkan berdasarkan prioritas (tinggi ke rendah)
@@ -61,18 +60,17 @@ def backward_chaining(goal, facts, rules, depth=0):
     print(f"{indent} {goal} tidak dapat dibuktikan dengan aturan yang ada.")
     return False
 
-if __name__ == "__main__":
-    # Jalankan Forward Chaining
-    hasil_forward = forward_chaining(facts, rules)
+print("=== SISTEM PAKAR: DIAGNOSA KERUSAKAN MOBIL ===")
+print("Fakta awal:", facts)
+print("\n--- Proses Forward Chaining ---")
+final_facts = forward_chaining(facts, rules)
 
-    # Jalankan Backward Chaining
-    print("=== PROSES BACKWARD CHAINING ===")
-    goal = "Isolasi Kelistrikan"
-    result = backward_chaining(goal, facts, rules)
+print("\n--- Proses Backward Chaining ---")
+goal = "Ganti Aki"
+print(f"Membuktikan tujuan: {goal}")
+result = backward_chaining(goal, set(facts), rules)
 
-    print("\n=== HASIL BACKWARD CHAINING ===")
-    if result:
-        print(f"Goal '{goal}' BERHASIL dibuktikan.")
-    else:
-        print(f"Goal '{goal}' TIDAK dapat dibuktikan.")
-    print("================================")
+if result:
+    print(f"\nKesimpulan: '{goal}' TERBUKTI berdasarkan fakta dan aturan yang ada.")
+else:
+    print(f"\nKesimpulan: '{goal}' TIDAK TERBUKTI dari fakta yang ada.")
